@@ -19,7 +19,7 @@ function SingUp(props) {
     }
 
     function handleSubmit(){
-        props.setAPIDetails({...signUpDetails})
+        props.setAPIDetailsSignUp({...signUpDetails})
     }
 
     return (

@@ -4,14 +4,19 @@ import Header from './Header'
 import Login from './Login'
 import MainPage from './Home'
 import SignUp from './SignUp'
-import APIFetcher from './APIFetcher'
+import SignUpAPI from './SignUpAPI'
+import LoginAPI from './LoginAPI'
 
 function App() {
   const [username, setUsername] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [APIDetails, setAPIDetails] = useState({
+  const [APIDetailsSignUp, setAPIDetailsSignUp] = useState({
     user: '',
     email: '',
+    pass: '',
+  })
+  const [APIDetailsLogin, setAPIDetailsLogin] = useState({
+    user: '',
     pass: '',
   })
 
@@ -30,13 +35,14 @@ function App() {
           <MainPage />
         </Route>
         <Route path="/login">
-          <Login />
+          <Login setAPIDetails={setAPIDetailsLogin} />
         </Route>
         <Route path="/signup">
-          <SignUp setAPIDetails={setAPIDetails} />
+          <SignUp setAPIDetails={setAPIDetailsSignUp} />
         </Route>
       </Switch>
-      <APIFetcher APIDetails={APIDetails}/>
+      <SignUpAPI APIDetailsSignUp={APIDetailsSignUp}/>
+      <LoginAPI APIDetailsLogin={APIDetailsLogin}/>
     </>
   );
 }
