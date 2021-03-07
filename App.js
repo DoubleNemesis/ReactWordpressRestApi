@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Route, Switch } from 'react-router-dom'
+import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom'
 import Header from './Header'
 import Login from './Login'
 import MainPage from './Home'
@@ -11,7 +11,7 @@ function App() {
   const [username, setUsername] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [APIDetailsSignUp, setAPIDetailsSignUp] = useState({
-    user: '',
+    user: '',    
     email: '',
     pass: '',
   })
@@ -22,7 +22,7 @@ function App() {
 
   return (
     <>
-
+    <Router>
       <Header username={username} isLoggedIn={isLoggedIn}>
         <nav>
           <Link to="/">Home</Link>
@@ -35,13 +35,14 @@ function App() {
           <MainPage />
         </Route>
         <Route path="/login">
-          <Login setAPIDetails={setAPIDetailsLogin} />
+          <Login setAPIDetailsLogin={setAPIDetailsLogin} />
         </Route>
         <Route path="/signup">
-          <SignUp setAPIDetails={setAPIDetailsSignUp} />
+          <SignUp setAPIDetailsSignUp={setAPIDetailsSignUp}  />
         </Route>
       </Switch>
-      <SignUpAPI APIDetailsSignUp={APIDetailsSignUp}/>
+      </Router>
+      <SignUpAPI APIDetailsSignUp={APIDetailsSignUp} setUsername={setUsername} setIsLoggedIn={setIsLoggedIn} />
       <LoginAPI APIDetailsLogin={APIDetailsLogin}/>
     </>
   );

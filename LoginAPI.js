@@ -1,21 +1,18 @@
 import React, { useEffect } from "react";
 
 function LoginAPI(props) {
-//send in user and pass to get jwt
-//get jwt and autologin
-//redirect php or react?
 
-
+// to get specific data: validate jwt and server side use that username to fetch data. Make sure key is needed to access enpoint.
 
     useEffect(() => {
         if (props.APIDetailsLogin.user.length > 0) {
             let formData = new FormData()
-            formData.append('user', props.APIDetailsLogin.user)
-            formData.append('pass', props.APIDetailsLogin.pass)
+            formData.append('username', props.APIDetailsLogin.user)
+            formData.append('password', props.APIDetailsLogin.pass)
 
             //change from here
 
-            const url = 'http://tomsclassroom.com/student/AAreg.php'
+            const url = 'https://tomsclassroom.com/student/?rest_route=/simple-jwt-login/v1/auth'
             fetch(url, {
                 method: 'POST',
                 body: formData

@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function SignUpAPI(props) {
+    const [urlToLogin, setUrlToLogin] = useState('')
 
     useEffect(() => {
         if (props.APIDetailsSignUp.user.length > 0) {
@@ -9,24 +10,41 @@ function SignUpAPI(props) {
             formData.append('email', props.APIDetailsSignUp.email)
             formData.append('pass', props.APIDetailsSignUp.pass)
 
-            const url = 'http://tomsclassroom.com/student/AAreg.php'
+            const url = 'https://tomsclassroom.com/student/AAreg.php'
             fetch(url, {
                 method: 'POST',
                 body: formData
             })
-            .then((response)=>response.text())
-            .then((post)=> {
-                console.log(post)
-                // if post is jwt use it to authenticate
-                // by diverting to new page 
-                //https://tomsclassroom.com/student/?rest_route=/simple-jwt-login/v1/autologin&jwt=JWT
-                //auth code?
-                // if not, throw err
+                .then((response) => response.text())
+                .then((post) => {
+                    console.log(post.split(','))
+                    let freshUser = post.split(',')
+                    if (freshUser[0] === 'true') {
+                        props.setUsername(freshUser[2])
+                        localStorage.setItem('jwt', freshUser[3])
+                        setUrlToLogin(`https://tomsclassroom.com/student/?rest_route=/simple-jwt-login/v1/autologin&jwt=${freshUser[3]}`)
+                    }
+                })
+        }
+    }, [props.APIDetailsSignUp])
+
+    useEffect(() => {
+        if (urlToLogin.length > 0) {
+            fetch(urlToLogin, {
+                method: 'GET'
             })
-           
+                .then((response) => {
+                    if (response.status == '200') {
+                        props.setIsLoggedIn(true)
+                        window.location.replace('https://tomsclassroom.com/mysite/#/')
+                    }
+                    else {
+                        console.log('error')
+                    }
+                })
         }
 
-    }, [props.APIDetailsSignUp])
+    }, [urlToLogin])
 
     return (
         <>
