@@ -2,48 +2,38 @@ import React, { useState } from 'react'
 import { HashRouter as Router, Link, Route, Switch } from 'react-router-dom'
 import Header from './Header'
 import Login from './Login'
-import MainPage from './Home'
+import ProfilePage from './ProfilePage'
 import SignUp from './SignUp'
-import SignUpAPI from './SignUpAPI'
-import LoginAPI from './LoginAPI'
+
+//sort out profile page logged in or not
+//block persist rerender?
 
 function App() {
   const [username, setUsername] = useState('')
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [APIDetailsSignUp, setAPIDetailsSignUp] = useState({
-    user: '',    
-    email: '',
-    pass: '',
-  })
-  const [APIDetailsLogin, setAPIDetailsLogin] = useState({
-    user: '',
-    pass: '',
-  })
-
-  return (
+  const [serverMessage, setServerMessage] = useState(false)
+    return (
     <>
     <Router>
-      <Header username={username} isLoggedIn={isLoggedIn}>
+      <Header username={username} isLoggedIn={isLoggedIn} serverMessage={serverMessage}>
         <nav>
-          <Link to="/">Home</Link>
+          <Link to="/">Profile</Link>
           <Link to="/signup">Sign Up</Link>
           <Link to="/login">Login</Link>
         </nav>
       </Header>
       <Switch>
         <Route exact path="/">
-          <MainPage />
+          <ProfilePage isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setUsername={setUsername} username={username} serverMessage={serverMessage} setServerMessage={setServerMessage} />
         </Route>
         <Route path="/login">
-          <Login setAPIDetailsLogin={setAPIDetailsLogin} />
+          <Login setUsername={setUsername} setIsLoggedIn={setIsLoggedIn} serverMessage={serverMessage} setServerMessage={setServerMessage} />
         </Route>
         <Route path="/signup">
-          <SignUp setAPIDetailsSignUp={setAPIDetailsSignUp}  />
+          <SignUp setUsername={setUsername} setIsLoggedIn={setIsLoggedIn} serverMessage={serverMessage} setServerMessage={setServerMessage} />
         </Route>
       </Switch>
       </Router>
-      <SignUpAPI APIDetailsSignUp={APIDetailsSignUp} setUsername={setUsername} setIsLoggedIn={setIsLoggedIn} />
-      <LoginAPI APIDetailsLogin={APIDetailsLogin}/>
     </>
   );
 }
